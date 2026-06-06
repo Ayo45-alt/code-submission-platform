@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ assignment.title }} | CodeBench{% endblock %}
+
+{% block sidebar %}
+    <a href="/assignments/" class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-400 hover:bg-gray-800 text-sm transition">
+        ← Back to Assignments
+    </a>
+{% endblock %}
+
+{% block content %}
+    <div class="mb-8">
+        <h2 class="text-3xl font-bold text-white">{{ assignment.title }}</h2>
+        <div class="flex gap-3 mt-2 mb-2">
+            <span class="text-xs bg-gray-800 text-emerald-400 px-2 py-1 rounded-md">{{ assignment.department }}</span>
+            <span class="text-xs bg-gray-800 text-emerald-400 px-2 py-1 rounded-md">Year {{ assignment.year }}</span>
+        </div>
+        <div class="flex gap-6 mt-2">
+            <p class="text-gray-400 text-sm">Due: <span class="text-emerald-400">{{ assignment.due_date|date:"M d, Y" }}</span></p>
+            <p class="text-gray-400 text-sm">Max score: <span class="text-white">{{ assignment.max_score }}</span></p>
+        </div>
+    </div>
+
+    <!-- Problem description -->
+    <div class="bg-gray-900 border border-gray-800 rounded-xl p-6 mb-6">
+        <h3 class="text-lg font-semibold text-white mb-4">Problem Description</h3>
+        <p class="text-gray-300 leading-relaxed">{{ assignment.description }}</p>
+    </div>
+
+    {% if assignment.input_format %}
+    <div class="bg-gray-900 border border-gray-800 rounded-xl p-6 mb-6">
+        <h3 class="text-lg font-semibold text-white mb-4">Input Format</h3>
+        <p class="text-gray-300 leading-relaxed">{{ assignment.input_format }}</p>
+    </div>
+    {% endif %}
+
+    <!-- Code editor -->
+    <div class="bg-gray-900 border border-gray-800 rounded-xl p-6">
+        <h3 class="text-lg font-semibold text-white mb-4">Your Solution</h3>
+        
+        <div id="editor" class="rounded-lg overflow-hidden mb-4" style="height: 400px;"></div>
+        
+        <form method="POST" id="submission-form" action="/submissions/submit/{{ assignment.pk }}/">
+            {% csrf_token %}
+            <input type="hidden" name="code" id="code-input">
+            <button type="submit" 
+                class="bg-emerald-600 hover:bg-emerald-500 text-white px-6 py-3 rounded-lg font-medium transition">
+                Submit Code
+            </button>
+        </form>
+    </div>
+
+    <!-- CodeMirror -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/theme/dracula.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/python/python.min.js"></script>
+
+    <script>
+        var editor = CodeMirror(document.getElementById('editor'), {
+            mode: 'python',
+            theme: 'dracula',
+            lineNumbers: true,
+            indentUnit: 4,
+            tabSize: 4,
+            indentWithTabs: false,
+            lineWrapping: true,
+            autofocus: true,
+            value: '# Write your Python solution here\n\n',
+        });
+
+        editor.setSize('100%', '400px');
+
+        document.getElementById('submission-form').addEventListener('submit', function(e) {
+            document.getElementById('code-input').value = editor.getValue();
+        });
+    </script>
+{% endblock %}

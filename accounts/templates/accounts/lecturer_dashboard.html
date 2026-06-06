@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard | CodeBench{% endblock %}
+
+{% block sidebar %}
+    <a href="/accounts/lecturer/dashboard/" class="flex items-center gap-3 px-4 py-3 rounded-lg bg-emerald-600 text-white text-sm font-medium">
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+        </svg>
+        Dashboard
+    </a>
+    <a href="/assignments/manage/" class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-400 hover:bg-gray-800 text-sm transition">
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+        </svg>
+        Assignments
+    </a>
+    <a href="/assignments/create/" class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-400 hover:bg-gray-800 text-sm transition">
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/>
+        </svg>
+        Create Assignment
+    </a>
+    <a href="/assignments/submissions/" class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-400 hover:bg-gray-800 text-sm transition">
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+        </svg>
+        All Submissions
+    </a>
+{% endblock %}
+
+{% block content %}
+    <div class="mb-8">
+        <h2 class="text-3xl font-bold text-white">Welcome back, {{ user.username }}</h2>
+        <p class="text-gray-400 mt-1">Here's an overview of your assignments and students.</p>
+    </div>
+
+    <!-- Stats cards -->
+    <div class="grid grid-cols-3 gap-6 mb-8">
+        <div class="bg-gray-900 border border-gray-800 rounded-xl p-6">
+            <div class="flex items-center justify-between mb-3">
+                <p class="text-gray-400 text-sm">Total Assignments</p>
+                <div class="w-8 h-8 bg-emerald-900/50 rounded-lg flex items-center justify-center">
+                    <svg class="w-4 h-4 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+                    </svg>
+                </div>
+            </div>
+            <p class="text-3xl font-bold text-white">{{ total_assignments }}</p>
+        </div>
+        <div class="bg-gray-900 border border-gray-800 rounded-xl p-6">
+            <div class="flex items-center justify-between mb-3">
+                <p class="text-gray-400 text-sm">Total Submissions</p>
+                <div class="w-8 h-8 bg-emerald-900/50 rounded-lg flex items-center justify-center">
+                    <svg class="w-4 h-4 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                    </svg>
+                </div>
+            </div>
+            <p class="text-3xl font-bold text-white">{{ total_submissions }}</p>
+        </div>
+        <div class="bg-gray-900 border border-gray-800 rounded-xl p-6">
+            <div class="flex items-center justify-between mb-3">
+                <p class="text-gray-400 text-sm">Total Students</p>
+                <div class="w-8 h-8 bg-emerald-900/50 rounded-lg flex items-center justify-center">
+                    <svg class="w-4 h-4 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
+                    </svg>
+                </div>
+            </div>
+            <p class="text-3xl font-bold text-white">{{ total_students }}</p>
+        </div>
+    </div>
+
+    <!-- Recent assignments -->
+    <div class="bg-gray-900 border border-gray-800 rounded-xl p-6">
+        <div class="flex justify-between items-center mb-4">
+            <h3 class="text-lg font-semibold text-white">Recent Assignments</h3>
+            <a href="/assignments/create/" class="text-sm text-emerald-400 hover:text-emerald-300 transition">
+                + Create New
+            </a>
+        </div>
+        {% if recent_assignments %}
+            <div class="grid gap-3">
+                {% for assignment in recent_assignments %}
+                <a href="/assignments/{{ assignment.pk }}/submissions/" 
+                   class="flex justify-between items-center p-4 bg-gray-800 hover:bg-gray-750 rounded-lg transition border border-gray-700 hover:border-emerald-600">
+                    <div>
+                        <p class="text-white font-medium">{{ assignment.title }}</p>
+                   <div class="flex gap-2 mt-1">
+                        <span class="text-xs text-emerald-400">{{ assignment.department }}</span>
+                        <span class="text-xs text-gray-500">•</span>
+                        <span class="text-xs text-gray-400">Year {{ assignment.year }}</span>
+                        <span class="text-xs text-gray-500">•</span>
+                        {% if assignment.is_published %}
+                            <span class="text-xs text-emerald-400">Published</span>
+                        {% else %}
+                            <span class="text-xs text-gray-500">Draft</span>
+                        {% endif %}
+                        <span class="text-xs text-gray-500">•</span>
+                        <span class="text-xs text-gray-500">Created {{ assignment.created_at|date:"M d, Y" }}</span>
+                    </div>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-xs text-gray-500">Due</p>
+                        <p class="text-sm text-emerald-400">{{ assignment.due_date|date:"M d, Y" }}</p>
+                    </div>
+                </a>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="text-gray-500 text-sm">No assignments yet. Create your first one!</p>
+        {% endif %}
+    </div>
+{% endblock %}

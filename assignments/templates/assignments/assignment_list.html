@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block title %}Assignments | CodeBench{% endblock %}
+
+{% block sidebar %}
+    <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-lg bg-emerald-600 text-white text-sm font-medium">
+         Assignments
+    </a>
+    <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-400 hover:bg-gray-800 text-sm transition">
+         My Submissions
+    </a>
+{% endblock %}
+
+{% block content %}
+    <div class="mb-8">
+        <h2 class="text-3xl font-bold text-white">Assignments</h2>
+        <p class="text-gray-400 mt-1">Click on an assignment to start coding.</p>
+    </div>
+
+    <div class="grid gap-4">
+        {% for assignment in assignments %}
+        <div class="bg-gray-900 border border-gray-800 rounded-xl p-6 hover:border-emerald-600 transition cursor-pointer"
+             onclick="window.location='/assignments/{{ assignment.pk }}/'">
+            <div class="flex justify-between items-start">
+                <div>
+                    <h3 class="text-lg font-semibold text-white">{{ assignment.title }}</h3>
+                    <div class="flex gap-3 mt-1">
+                        <span class="text-xs bg-gray-800 text-emerald-400 px-2 py-1 rounded-md">{{ assignment.department }}</span>
+                        <span class="text-xs bg-gray-800 text-emerald-400 px-2 py-1 rounded-md">Year {{ assignment.year }}</span>
+                    </div>
+                    <p class="text-gray-400 text-sm mt-2">{{ assignment.description|truncatewords:20 }}</p>
+                </div>
+                <div class="text-right">
+                    <p class="text-xs text-gray-500">Due</p>
+                    <p class="text-sm text-emerald-400">{{ assignment.due_date|date:"M d, Y" }}</p>
+                    <p class="text-xs text-gray-500 mt-2">Max score</p>
+                    <p class="text-sm text-white">{{ assignment.max_score }}</p>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="bg-gray-900 border border-gray-800 rounded-xl p-6">
+            <p class="text-gray-500 text-sm">No active assignments yet. Check back later!</p>
+        </div>
+        {% endfor %}
+    </div>
+{% endblock %}

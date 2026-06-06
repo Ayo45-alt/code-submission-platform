@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+
+{% block title %}Edit Assignment | CodeBench{% endblock %}
+
+{% block sidebar %}
+    <a href="/accounts/lecturer/dashboard/" class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-400 hover:bg-gray-800 text-sm transition">
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+        </svg>
+        Dashboard
+    </a>
+    <a href="/assignments/manage/" class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-400 hover:bg-gray-800 text-sm transition">
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+        </svg>
+        Assignments
+    </a>
+    <a href="/assignments/create/" class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-400 hover:bg-gray-800 text-sm transition">
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/>
+        </svg>
+        Create Assignment
+    </a>
+{% endblock %}
+
+{% block content %}
+    <div class="mb-8">
+        <a href="/assignments/manage/" class="text-sm text-gray-500 hover:text-gray-300 transition flex items-center gap-1 mb-4">
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
+            </svg>
+            Back to Assignments
+        </a>
+        <h2 class="text-3xl font-bold text-white">Edit Assignment</h2>
+        <p class="text-gray-400 mt-1">Update the assignment details.</p>
+    </div>
+
+    <form method="POST" action="/assignments/{{ assignment.pk }}/edit/">
+        {% csrf_token %}
+
+        <div class="bg-gray-900 border border-gray-800 rounded-xl p-6 mb-6">
+            <h3 class="text-lg font-semibold text-white mb-6">Assignment Details</h3>
+
+            <div class="grid grid-cols-2 gap-5 mb-5">
+                <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-2">Title</label>
+                    <input type="text" name="title" required value="{{ assignment.title }}"
+                        class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 text-white text-sm focus:outline-none focus:border-emerald-500 transition">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-2">Department</label>
+                    <input type="text" name="department" required value="{{ assignment.department }}"
+                        class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 text-white text-sm focus:outline-none focus:border-emerald-500 transition">
+                </div>
+            </div>
+
+            <div class="mb-5">
+                <label class="block text-sm font-medium text-gray-300 mb-2">Description</label>
+                <textarea name="description" required rows="4"
+                    class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 text-white text-sm focus:outline-none focus:border-emerald-500 transition resize-none">{{ assignment.description }}</textarea>
+            </div>
+
+            <div class="mb-5">
+                <label class="block text-sm font-medium text-gray-300 mb-2">Input Format <span class="text-gray-500 font-normal">(optional)</span></label>
+                <textarea name="input_format" rows="2"
+                    class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 text-white text-sm focus:outline-none focus:border-emerald-500 transition resize-none"
+                    placeholder="e.g. The first line is the student's name. The second line is their score.">{{ assignment.input_format }}</textarea>
+            </div>
+
+            <div class="grid grid-cols-3 gap-5">
+                <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-2">Year</label>
+                    <select name="year"
+                        class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 text-white text-sm focus:outline-none focus:border-emerald-500 transition">
+                        <option value="1" {% if assignment.year == '1' %}selected{% endif %}>Year 1</option>
+                        <option value="2" {% if assignment.year == '2' %}selected{% endif %}>Year 2</option>
+                        <option value="3" {% if assignment.year == '3' %}selected{% endif %}>Year 3</option>
+                        <option value="4" {% if assignment.year == '4' %}selected{% endif %}>Year 4</option>
+                        <option value="5" {% if assignment.year == '5' %}selected{% endif %}>Year 5</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-2">Due Date</label>
+                    <input type="datetime-local" name="due_date" required
+                        value="{{ assignment.due_date|date:'Y-m-d' }}T{{ assignment.due_date|date:'H:i' }}"
+                        min="{{ now|date:'Y-m-d' }}T{{ now|date:'H:i' }}"
+                        class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 text-white text-sm focus:outline-none focus:border-emerald-500 transition">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-2">Max Score</label>
+                    <input type="number" name="max_score" value="{{ assignment.max_score }}"
+                        class="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 text-white text-sm focus:outline-none focus:border-emerald-500 transition">
+                </div>
+            </div>
+
+            <div class="mt-5 flex items-center gap-3">
+                <input type="checkbox" name="is_published" id="is_published"
+                    class="w-4 h-4 accent-emerald-500"
+                    {% if assignment.is_published %}checked{% endif %}>
+                <label for="is_published" class="text-sm text-gray-300">Published — students can see this assignment</label>
+            </div>
+        </div>
+
+        <div class="flex gap-3">
+            <button type="submit"
+                class="bg-emerald-600 hover:bg-emerald-500 text-white px-8 py-3 rounded-lg font-semibold text-sm transition">
+                Save Changes
+            </button>
+            <a href="/assignments/manage/"
+               class="border border-gray-700 hover:border-gray-500 text-gray-300 px-8 py-3 rounded-lg font-semibold text-sm transition">
+                Cancel
+            </a>
+        </div>
+    </form>
+{% endblock %}

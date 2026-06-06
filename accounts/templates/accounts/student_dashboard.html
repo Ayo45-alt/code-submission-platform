@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+{% load custom_filters %}
+
+{% block title %}Dashboard | CodeBench{% endblock %}
+
+{% block sidebar %}
+    <a href="/accounts/student/dashboard/" class="flex items-center gap-3 px-4 py-3 rounded-lg bg-emerald-600 text-white text-sm font-medium">
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+        </svg>
+        Dashboard
+    </a>
+    <a href="/assignments/" class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-400 hover:bg-gray-800 text-sm transition">
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+        </svg>
+        Assignments
+    </a>
+    <a href="/submissions/history/" class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-400 hover:bg-gray-800 text-sm transition">
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+        </svg>
+        My Submissions
+    </a>
+{% endblock %}
+
+{% block content %}
+    <div class="mb-8">
+        <h2 class="text-3xl font-bold text-white">Welcome back, {{ user.username }}</h2>
+        <p class="text-gray-400 mt-1">Here are your active assignments.</p>
+    </div>
+
+    <!-- Stats cards -->
+    <div class="grid grid-cols-3 gap-6 mb-8">
+        <div class="bg-gray-900 border border-gray-800 rounded-xl p-6">
+            <p class="text-gray-400 text-sm">Active Assignments</p>
+            <p class="text-3xl font-bold text-white mt-2">{{ total_active }}</p>
+        </div>
+        <div class="bg-gray-900 border border-gray-800 rounded-xl p-6">
+            <p class="text-gray-400 text-sm">Submitted</p>
+            <p class="text-3xl font-bold text-white mt-2">{{ total_submitted }}</p>
+        </div>
+        <div class="bg-gray-900 border border-gray-800 rounded-xl p-6">
+            <p class="text-gray-400 text-sm">Average Score</p>
+            <p class="text-3xl font-bold text-white mt-2">{{ average_score }}%</p>
+        </div>
+    </div>
+
+    <!-- Active assignments -->
+    <div class="bg-gray-900 border border-gray-800 rounded-xl p-6">
+        <h3 class="text-lg font-semibold text-white mb-4">Assignments</h3>
+        {% if active_assignments %}
+            <div class="grid gap-3">
+                {% for assignment in active_assignments %}
+                    {% with submission=submission_map|get_item:assignment.pk %}
+                    <a href="{% if submission %}/submissions/result/{{ submission.pk }}/{% else %}/assignments/{{ assignment.pk }}/{% endif %}"
+                       class="block p-4 rounded-lg border transition
+                       {% if submission %}
+                           bg-gray-800 border-emerald-800/50 hover:border-emerald-600
+                       {% elif assignment.due_date < now %}
+                           bg-red-950/20 border-red-900/50 hover:border-red-700
+                       {% else %}
+                           bg-gray-800 border-gray-700 hover:border-emerald-600
+                       {% endif %}">
+                        <div class="flex justify-between items-start">
+                            <p class="text-white font-medium">{{ assignment.title }}</p>
+                            <div class="text-right ml-4 shrink-0">
+                                {% if submission %}
+                                    <span class="text-xs bg-emerald-900/50 text-emerald-400 px-2 py-1 rounded-md">Submitted</span>
+                                    <p class="text-sm text-white mt-1 font-semibold">{{ submission.score }}/{{ assignment.max_score }}</p>
+                                {% elif assignment.due_date < now %}
+                                    <span class="text-xs bg-red-900/50 text-red-400 px-2 py-1 rounded-md">Deadline Passed</span>
+                                    <p class="text-sm text-red-400 mt-1">{{ assignment.due_date|date:"M d, Y" }}</p>
+                                {% else %}
+                                    <p class="text-xs text-gray-500">Due</p>
+                                    <p class="text-sm text-emerald-400">{{ assignment.due_date|date:"M d, Y" }}</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="flex gap-2 mt-2">
+                            <span class="text-xs text-emerald-400">{{ assignment.department }}</span>
+                            <span class="text-xs text-gray-500">•</span>
+                            <span class="text-xs text-gray-400">Year {{ assignment.year }}</span>
+                            <span class="text-xs text-gray-500">•</span>
+                            <span class="text-xs text-gray-500">Posted {{ assignment.created_at|date:"M d, Y" }}</span>
+                        </div>
+                    </a>
+                    {% endwith %}
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="text-gray-500 text-sm">No active assignments yet. Check back later!</p>
+        {% endif %}
+    </div>
+{% endblock %}

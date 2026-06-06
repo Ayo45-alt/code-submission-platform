@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CodeBench — Python Assessment Platform</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .hero-glow {
+            background: radial-gradient(ellipse 80% 50% at 50% -20%, rgba(16, 185, 129, 0.15), transparent);
+        }
+    </style>
+</head>
+<body class="bg-gray-950 text-gray-100 font-sans min-h-screen">
+
+    <div class="hero-glow fixed inset-0 pointer-events-none"></div>
+
+    <!-- Navbar -->
+    <nav class="relative border-b border-gray-800/50 px-8 py-4 flex justify-between items-center">
+        <div class="flex items-center gap-2">
+            <svg class="w-7 h-7 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+            </svg>
+            <h1 class="text-lg font-bold tracking-tight leading-none">
+                <span class="text-white">Code</span><span class="text-emerald-400">Bench</span>
+            </h1>
+        </div>
+        <div class="flex gap-3 items-center">
+            <a href="/accounts/login/" class="text-sm text-gray-400 hover:text-white px-4 py-2 rounded-lg transition font-medium">
+                Login
+            </a>
+            <a href="/accounts/register/" class="text-sm bg-emerald-600 hover:bg-emerald-500 text-white px-5 py-2 rounded-lg transition font-medium">
+                Get Started
+            </a>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="relative max-w-4xl mx-auto px-8 pt-28 pb-20 text-center">
+        <div class="inline-flex items-center gap-2 bg-gray-900 border border-gray-700 text-gray-300 text-xs font-medium px-4 py-2 rounded-full mb-8">
+            <span class="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></span>
+            Built for Caleb University — Dept. of Computer Science
+        </div>
+
+        <h2 class="text-6xl font-extrabold text-white leading-tight mb-6 tracking-tight">
+            Code. Submit.<br>
+            <span class="text-emerald-400">Get Graded Instantly.</span>
+        </h2>
+
+        <p class="text-gray-400 text-lg mb-10 max-w-2xl mx-auto leading-relaxed">
+            A platform where lecturers post Python assignments with automated test cases,
+            and students write, submit and get scored in seconds.
+        </p>
+
+        <div class="flex gap-4 justify-center">
+            <a href="/accounts/register/" class="flex items-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white px-8 py-3.5 rounded-lg font-semibold transition text-sm">
+                Get Started Free
+                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+                </svg>
+            </a>
+            <a href="/accounts/login/" class="flex items-center gap-2 border border-gray-700 hover:border-gray-500 text-gray-300 hover:text-white px-8 py-3.5 rounded-lg font-semibold transition text-sm">
+                Login to your account
+            </a>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section class="relative max-w-5xl mx-auto px-8 py-16">
+        <p class="text-center text-gray-500 text-sm font-medium uppercase tracking-widest mb-10">Everything you need</p>
+        <div class="grid grid-cols-3 gap-5">
+
+            <div class="bg-gray-900/80 border border-gray-800 rounded-2xl p-6">
+                <div class="w-10 h-10 bg-emerald-900/50 rounded-lg flex items-center justify-center mb-4">
+                    <svg class="w-5 h-5 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                    </svg>
+                </div>
+                <h3 class="text-white font-semibold mb-2">Instant Grading</h3>
+                <p class="text-gray-400 text-sm leading-relaxed">Code runs automatically in a secure sandbox and gets graded against test cases in seconds.</p>
+            </div>
+
+            <div class="bg-gray-900/80 border border-gray-800 rounded-2xl p-6">
+                <div class="w-10 h-10 bg-emerald-900/50 rounded-lg flex items-center justify-center mb-4">
+                    <svg class="w-5 h-5 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                    </svg>
+                </div>
+                <h3 class="text-white font-semibold mb-2">Secure Execution</h3>
+                <p class="text-gray-400 text-sm leading-relaxed">All code runs in isolated Docker containers with strict memory, CPU and network limits.</p>
+            </div>
+
+            <div class="bg-gray-900/80 border border-gray-800 rounded-2xl p-6">
+                <div class="w-10 h-10 bg-emerald-900/50 rounded-lg flex items-center justify-center mb-4">
+                    <svg class="w-5 h-5 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                    </svg>
+                </div>
+                <h3 class="text-white font-semibold mb-2">Detailed Feedback</h3>
+                <p class="text-gray-400 text-sm leading-relaxed">Students see exactly which test cases passed or failed with full output comparison.</p>
+            </div>
+
+            <div class="bg-gray-900/80 border border-gray-800 rounded-2xl p-6">
+                <div class="w-10 h-10 bg-emerald-900/50 rounded-lg flex items-center justify-center mb-4">
+                    <svg class="w-5 h-5 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                    </svg>
+                </div>
+                <h3 class="text-white font-semibold mb-2">Assignment Management</h3>
+                <p class="text-gray-400 text-sm leading-relaxed">Lecturers create and manage assignments organised by department and year group.</p>
+            </div>
+
+            <div class="bg-gray-900/80 border border-gray-800 rounded-2xl p-6">
+                <div class="w-10 h-10 bg-emerald-900/50 rounded-lg flex items-center justify-center mb-4">
+                    <svg class="w-5 h-5 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/>
+                    </svg>
+                </div>
+                <h3 class="text-white font-semibold mb-2">Browser Code Editor</h3>
+                <p class="text-gray-400 text-sm leading-relaxed">Write Python directly in the browser with syntax highlighting, line numbers and auto-indentation.</p>
+            </div>
+
+            <div class="bg-gray-900/80 border border-gray-800 rounded-2xl p-6">
+                <div class="w-10 h-10 bg-emerald-900/50 rounded-lg flex items-center justify-center mb-4">
+                    <svg class="w-5 h-5 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                </div>
+                <h3 class="text-white font-semibold mb-2">Submission History</h3>
+                <p class="text-gray-400 text-sm leading-relaxed">Students track all past submissions and scores and can resubmit before the deadline.</p>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="relative border-t border-gray-800/50 px-8 py-8 text-center mt-8">
+        <p class="text-gray-600 text-sm">CodeBench — Caleb University, Department of Computer Science</p>
+        <p class="text-gray-700 text-xs mt-1">Final Year Project — Oyomi Omokhunu Ayololuwa | 22/11488</p>
+    </footer>
+
+</body>
+</html>
