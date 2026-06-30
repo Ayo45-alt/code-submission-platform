@@ -97,8 +97,8 @@ def submit_code(request, assignment_id):
     ).count()
     
     if existing_submissions >= 3:
-        messages.error(request, 'You have reached the maximum of 3 submissions for this assignment.')
-        return redirect('assignment_detail', pk=assignment_id)
+       messages.error(request, 'You have used all 3 submission attempts for this assignment.')
+       return redirect('assignment_detail', pk=assignment_id)
     
     if request.method == 'POST':
         code = request.POST.get('code', '')

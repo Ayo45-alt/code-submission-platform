@@ -1,156 +1,435 @@
+{% load static %}
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CodeBench — Python Assessment Platform</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="{% static 'js/tailwind.js' %}"></script>
+
     <script>
         tailwind.config = {
-            darkMode: 'class',
             theme: {
                 extend: {
                     fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        mono: ['"JetBrains Mono"', 'monospace']
                     }
                 }
             }
         }
     </script>
+
     <style>
-        .hero-glow {
-            background: radial-gradient(ellipse 80% 50% at 50% -20%, rgba(16, 185, 129, 0.15), transparent);
+        body {
+            background: #F8FAFC;
+            color: #0F172A;
+            font-family: "Plus Jakarta Sans", sans-serif;
+            overflow-x: hidden;
+        }
+
+        .glow-blob {
+            filter: blur(80px);
+            opacity: 0.4;
+            mix-blend-mode: multiply;
+        }
+
+        .hover-card {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .hover-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px -8px rgba(15, 23, 42, 0.08);
+            border-color: #A7F3D0;
+        }
+
+        /* Gradient Text */
+        .text-gradient {
+            background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
     </style>
 </head>
-<body class="bg-gray-950 text-gray-100 font-sans min-h-screen">
 
-    <div class="hero-glow fixed inset-0 pointer-events-none"></div>
+<body class="min-h-screen relative bg-[#F8FAFC]">
 
-    <!-- Navbar -->
-    <nav class="relative border-b border-gray-800/50 px-8 py-4 flex justify-between items-center">
-        <div class="flex items-center gap-2">
-            <svg class="w-7 h-7 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+<!-- Ambient Blur Blobs -->
+<div class="glow-blob absolute top-[-10%] right-[-10%] w-[500px] h-[500px] rounded-full bg-emerald-100 pointer-events-none z-0"></div>
+<div class="glow-blob absolute top-[40%] left-[-10%] w-[600px] h-[600px] rounded-full bg-blue-50 pointer-events-none z-0"></div>
+
+<div class="relative z-10 flex flex-col min-h-screen">
+    <!-- NAVBAR -->
+    <nav class="flex justify-between items-center max-w-7xl mx-auto w-full px-6 lg:px-8 py-6 border-b border-[#E2E8F0] bg-white/80 backdrop-blur-md sticky top-0 z-50">
+        <!-- Logo -->
+        <a href="/" class="flex items-center gap-2 select-none group">
+            <svg class="h-8 w-auto transform group-hover:scale-[1.02] transition-transform duration-200" viewBox="8 8 46 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Green open brace { -->
+                <path d="M18 10C14 10 13 12 13 15V18C13 20 11 20 10 20C11 20 13 20 13 22V25C13 28 14 30 18 30" stroke="#10B981" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                <!-- C Container -->
+                <path d="M35 14H28C26.8954 14 26 14.8954 26 16V24C26 25.1046 26.8954 26 28 26H35" stroke="#0F172A" stroke-width="3" stroke-linecap="round"/>
+                <!-- Green Checkmark inside C -->
+                <path d="M29 20L31 22L34 17" stroke="#10B981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <!-- Green close brace } -->
+                <path d="M43 10C47 10 48 12 48 15V18C48 20 50 20 51 20C50 20 48 20 48 22V25C48 28 47 30 43 30" stroke="#10B981" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
-            <h1 class="text-lg font-bold tracking-tight leading-none">
-                <span class="text-white">Code</span><span class="text-emerald-400">Bench</span>
-            </h1>
+            <span class="font-bold text-xl text-[#0F172A] hidden sm:block">CodeBench</span>
+        </a>
+
+        <!-- Links -->
+        <div class="hidden md:flex items-center gap-8">
+            <a href="#how-it-works" class="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors">How it Works</a>
         </div>
-        <div class="flex gap-3 items-center">
-            <a href="/accounts/login/" class="text-sm text-gray-400 hover:text-white px-4 py-2 rounded-lg transition font-medium">
-                Login
+
+        <!-- Buttons -->
+        <div class="flex items-center gap-2 sm:gap-4">
+            <a href="/accounts/login/" class="text-xs sm:text-sm font-semibold text-slate-700 hover:text-slate-900 transition-colors px-2.5 py-1.5 sm:px-4 sm:py-2">
+                Log in
             </a>
-            <a href="/accounts/register/" class="text-sm bg-emerald-600 hover:bg-emerald-500 text-white px-5 py-2 rounded-lg transition font-medium">
+            <a href="/accounts/register/" class="text-xs sm:text-sm font-semibold bg-[#10B981] hover:bg-[#059669] text-white px-3.5 py-2 sm:px-5 sm:py-2.5 rounded-xl transition-all shadow-sm shadow-emerald-500/10 flex items-center gap-1.5 group">
                 Get Started
+                <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 transform group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                </svg>
             </a>
         </div>
     </nav>
 
-    <!-- Hero -->
-    <section class="relative max-w-4xl mx-auto px-8 pt-28 pb-20 text-center">
-        <div class="inline-flex items-center gap-2 bg-gray-900 border border-gray-700 text-gray-300 text-xs font-medium px-4 py-2 rounded-full mb-8">
-            <span class="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></span>
-            Built for Caleb University — Dept. of Computer Science
-        </div>
-
-        <h2 class="text-6xl font-extrabold text-white leading-tight mb-6 tracking-tight">
-            Code. Submit.<br>
-            <span class="text-emerald-400">Get Graded Instantly.</span>
-        </h2>
-
-        <p class="text-gray-400 text-lg mb-10 max-w-2xl mx-auto leading-relaxed">
-            A platform where lecturers post Python assignments with automated test cases,
-            and students write, submit and get scored in seconds.
-        </p>
-
-        <div class="flex gap-4 justify-center">
-            <a href="/accounts/register/" class="flex items-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white px-8 py-3.5 rounded-lg font-semibold transition text-sm">
-                Get Started Free
-                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+    <!-- HERO SECTION -->
+    <header class="max-w-7xl mx-auto w-full px-6 lg:px-8 pt-16 pb-24 grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
+        <!-- LEFT: Intro -->
+        <div class="lg:col-span-6 space-y-8">
+            <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-50 border border-emerald-100 text-emerald-700 text-xs font-semibold select-none">
+                <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
                 </svg>
-            </a>
-            <a href="/accounts/login/" class="flex items-center gap-2 border border-gray-700 hover:border-gray-500 text-gray-300 hover:text-white px-8 py-3.5 rounded-lg font-semibold transition text-sm">
-                Login to your account
-            </a>
+                Automated Python Grading for Universities
+            </div>
+
+            <h1 class="text-4xl sm:text-6xl font-extrabold text-slate-900 tracking-tight leading-[1.1]">
+                Code. Submit.<br>
+                Grade. <span class="text-[#10B981]">Done.</span>
+            </h1>
+
+            <p class="text-slate-600 text-base sm:text-lg max-w-lg leading-relaxed">
+                Create assignments, collect submissions, and automatically grade Python code in seconds. Built for university courses.
+            </p>
+
+            <div class="flex flex-col sm:flex-row gap-4">
+                <a href="/accounts/register/?role=lecturer" class="bg-[#10B981] hover:bg-[#059669] text-white font-semibold px-6 py-3.5 rounded-xl transition-all shadow-md shadow-emerald-500/10 flex items-center justify-center gap-2 group">
+                    <svg class="w-5 h-5 text-emerald-100" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222"/>
+                    </svg>
+                    Start as Lecturer
+                </a>
+                <a href="/accounts/register/?role=student" class="bg-white hover:bg-slate-50 border border-slate-200 text-slate-800 font-semibold px-6 py-3.5 rounded-xl transition-all flex items-center justify-center gap-2">
+                    <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                    </svg>
+                    Join as Student
+                </a>
+            </div>
+
+            <!-- Features checkmarks -->
+            <div class="flex flex-wrap gap-x-6 gap-y-2 pt-2 border-t border-slate-200">
+                <div class="flex items-center gap-2 text-sm text-slate-600 font-medium">
+                    <span class="text-emerald-500 font-bold">✓</span> Save time
+                </div>
+                <div class="flex items-center gap-2 text-sm text-slate-600 font-medium">
+                    <span class="text-emerald-500 font-bold">✓</span> Instant feedback
+                </div>
+                <div class="flex items-center gap-2 text-sm text-slate-600 font-medium">
+                    <span class="text-emerald-500 font-bold">✓</span> Focus on teaching
+                </div>
+            </div>
+        </div>
+
+        <!-- RIGHT: Mockup UI -->
+        <div class="lg:col-span-6 flex justify-center z-10 relative">
+            <div class="w-full max-w-[540px] bg-slate-100 rounded-3xl p-3 shadow-xl border border-slate-200/50 backdrop-blur-sm relative animate-fade-in-up">
+                <!-- Header control bar -->
+                <div class="flex items-center justify-between px-4 pb-2 pt-1 border-b border-slate-200">
+                    <div class="flex gap-1.5">
+                        <span class="w-3 h-3 rounded-full bg-red-400"></span>
+                        <span class="w-3 h-3 rounded-full bg-yellow-400"></span>
+                        <span class="w-3 h-3 rounded-full bg-green-400"></span>
+                    </div>
+                    <span class="text-[11px] text-slate-400 font-mono">codebench.edu/dashboard/</span>
+                    <span class="w-6"></span>
+                </div>
+                
+                <div class="bg-white rounded-2xl mt-3 flex overflow-hidden border border-slate-200 min-h-[340px] text-[11px]">
+                    <!-- Sidebar mockup -->
+                    <div class="w-[125px] border-r border-slate-100 p-3 bg-slate-50 flex flex-col justify-between">
+                        <div class="space-y-4">
+                            <div class="flex items-center gap-1">
+                                <span class="text-emerald-500 font-extrabold">{c}</span>
+                                <span class="font-bold text-slate-800 text-[10px]">CodeBench</span>
+                            </div>
+                            <div class="space-y-1">
+                                <div class="px-2 py-1.5 rounded bg-emerald-50 text-emerald-700 font-semibold flex items-center gap-1.5">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Dashboard
+                                </div>
+                                <div class="px-2 py-1.5 text-slate-500 flex items-center gap-1.5">Assignments</div>
+                                <div class="px-2 py-1.5 text-slate-500 flex items-center gap-1.5">All Submissions</div>
+                                <div class="px-2 py-1.5 text-slate-500 flex items-center gap-1.5">My Classes</div>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-1.5 border-t border-slate-200/60 pt-2">
+                            <div class="w-5 h-5 rounded-full bg-emerald-500 text-white font-bold flex items-center justify-center text-[9px]">J</div>
+                            <div>
+                                <p class="font-bold text-slate-800 text-[9px] leading-tight">Mr. Joshua</p>
+                                <p class="text-slate-400 text-[8px] leading-tight">Lecturer</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Content mockup -->
+                    <div class="flex-1 p-4 space-y-4">
+                        <div class="flex justify-between items-center">
+                            <h4 class="text-slate-900 font-extrabold text-[13px]">Dashboard</h4>
+                            <span class="w-5 h-5 rounded bg-slate-50 border border-slate-200 flex items-center justify-center">
+                                <svg class="w-3 h-3 text-slate-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a3 3 0 11-5.714 0"/>
+                                </svg>
+                            </span>
+                        </div>
+
+                        <!-- Stats boxes -->
+                        <div class="grid grid-cols-3 gap-2">
+                            <div class="bg-slate-50 border border-slate-100 p-2 rounded-lg">
+                                <p class="text-[8px] text-slate-400 uppercase font-bold">Assignments</p>
+                                <p class="text-sm font-bold text-slate-800">24</p>
+                            </div>
+                            <div class="bg-slate-50 border border-slate-100 p-2 rounded-lg">
+                                <p class="text-[8px] text-slate-400 uppercase font-bold">Submissions</p>
+                                <p class="text-sm font-bold text-slate-800">152</p>
+                            </div>
+                            <div class="bg-slate-50 border border-slate-100 p-2 rounded-lg">
+                                <p class="text-[8px] text-slate-400 uppercase font-bold">Students</p>
+                                <p class="text-sm font-bold text-slate-800">78</p>
+                            </div>
+                        </div>
+
+                        <!-- Mini Table -->
+                        <div class="space-y-1.5">
+                            <div class="flex justify-between items-center">
+                                <p class="font-bold text-slate-800 text-[10px]">Recent Submissions</p>
+                                <span class="text-[8px] text-emerald-500 font-bold">View all</span>
+                            </div>
+                            <div class="border border-slate-100 rounded-lg overflow-hidden text-[9px]">
+                                <div class="bg-slate-50 px-2 py-1 border-b border-slate-100 flex justify-between font-semibold text-slate-500">
+                                    <span>Student</span>
+                                    <span>Assignment</span>
+                                    <span>Status</span>
+                                    <span>Score</span>
+                                </div>
+                                <div class="px-2 py-1.5 flex justify-between items-center border-b border-slate-50">
+                                    <span>John Doe</span>
+                                    <span class="text-slate-400">Lab 1: Sum</span>
+                                    <span class="px-1.5 py-0.5 rounded bg-emerald-50 text-emerald-600 font-semibold text-[8px]">Passed</span>
+                                    <span class="font-bold">100%</span>
+                                </div>
+                                <div class="px-2 py-1.5 flex justify-between items-center border-b border-slate-50">
+                                    <span>Jane Smith</span>
+                                    <span class="text-slate-400">Lab 1: Sum</span>
+                                    <span class="px-1.5 py-0.5 rounded bg-emerald-50 text-emerald-600 font-semibold text-[8px]">Passed</span>
+                                    <span class="font-bold">90%</span>
+                                </div>
+                                <div class="px-2 py-1.5 flex justify-between items-center">
+                                    <span>Mike Johnson</span>
+                                    <span class="text-slate-400">Lab 1: Sum</span>
+                                    <span class="px-1.5 py-0.5 rounded bg-red-50 text-red-600 font-semibold text-[8px]">Failed</span>
+                                    <span class="font-bold">60%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- HOW IT WORKS SECTION -->
+    <section id="how-it-works" class="max-w-7xl mx-auto w-full px-6 lg:px-8 py-20 border-t border-slate-200 bg-white">
+        <div class="text-center max-w-3xl mx-auto space-y-4 mb-16">
+            <p class="text-xs font-bold uppercase tracking-wider text-emerald-600">HOW IT WORKS</p>
+            <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900">Simple workflow. Powerful results.</h2>
+            <p class="text-slate-500">AutoGrade manages the lifecycle of university code submissions securely and reliably.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+            <!-- step 1 -->
+            <div class="space-y-4 relative">
+                <div class="w-12 h-12 rounded-2xl bg-emerald-50 border border-emerald-100 flex items-center justify-center text-emerald-600 text-lg font-bold">1</div>
+                <h3 class="font-bold text-slate-900 text-lg">Create Assignment</h3>
+                <p class="text-slate-500 text-sm leading-relaxed">Set questions, deadline times, and test cases directly in the lecturer dashboard.</p>
+            </div>
+            <!-- step 2 -->
+            <div class="space-y-4 relative">
+                <div class="w-12 h-12 rounded-2xl bg-emerald-50 border border-emerald-100 flex items-center justify-center text-emerald-600 text-lg font-bold">2</div>
+                <h3 class="font-bold text-slate-900 text-lg">Students Submit Code</h3>
+                <p class="text-slate-500 text-sm leading-relaxed">Students write Python solutions inside the integrated web IDE panel.</p>
+            </div>
+            <!-- step 3 -->
+            <div class="space-y-4 relative">
+                <div class="w-12 h-12 rounded-2xl bg-emerald-50 border border-emerald-100 flex items-center justify-center text-emerald-600 text-lg font-bold">3</div>
+                <h3 class="font-bold text-slate-900 text-lg">CodeBench Grades</h3>
+                <p class="text-slate-500 text-sm leading-relaxed">Runs submitted code securely inside sandboxed test cases immediately.</p>
+            </div>
+            <!-- step 4 -->
+            <div class="space-y-4 relative">
+                <div class="w-12 h-12 rounded-2xl bg-emerald-50 border border-emerald-100 flex items-center justify-center text-emerald-600 text-lg font-bold">4</div>
+                <h3 class="font-bold text-slate-900 text-lg">View Results</h3>
+                <p class="text-slate-500 text-sm leading-relaxed">Get instant score sheets and structural test-by-test breakdown feedback.</p>
+            </div>
         </div>
     </section>
 
-    <!-- Features -->
-    <section class="relative max-w-5xl mx-auto px-8 py-16">
-        <p class="text-center text-gray-500 text-sm font-medium uppercase tracking-widest mb-10">Everything you need</p>
-        <div class="grid grid-cols-3 gap-5">
+    <!-- WRITING CODE SECTION -->
+    <section class="max-w-7xl mx-auto w-full px-6 lg:px-8 py-20 grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
+        <!-- Left details -->
+        <div class="lg:col-span-5 space-y-6">
+            <p class="text-xs font-bold uppercase tracking-wider text-emerald-600">INSTANT FEEDBACK FOR STUDENTS</p>
+            <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 leading-tight">Write code. Get feedback. Improve.</h2>
+            <p class="text-slate-500 leading-relaxed">Students receive detailed test-case logs and diagnostics immediately so they can adjust their logic and re-submit.</p>
 
-            <div class="bg-gray-900/80 border border-gray-800 rounded-2xl p-6">
-                <div class="w-10 h-10 bg-emerald-900/50 rounded-lg flex items-center justify-center mb-4">
-                    <svg class="w-5 h-5 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/>
-                    </svg>
+            <ul class="space-y-3.5">
+                <li class="flex items-start gap-3">
+                    <span class="text-emerald-500 font-bold mt-0.5">✓</span>
+                    <span class="text-slate-700 text-sm font-medium">Detailed test case parameters and input values</span>
+                </li>
+                <li class="flex items-start gap-3">
+                    <span class="text-emerald-500 font-bold mt-0.5">✓</span>
+                    <span class="text-slate-700 text-sm font-medium">Clear feedback detailing stdout mismatches or runtime errors</span>
+                </li>
+                <li class="flex items-start gap-3">
+                    <span class="text-emerald-500 font-bold mt-0.5">✓</span>
+                    <span class="text-slate-700 text-sm font-medium">Submission track over time to build coding resilience</span>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Right code layout mockup -->
+        <div class="lg:col-span-7 bg-slate-100 rounded-3xl p-4 border border-slate-200/60 shadow-lg grid grid-cols-1 md:grid-cols-12 gap-4">
+            <!-- IDE window -->
+            <div class="md:col-span-7 bg-[#1E293B] rounded-2xl p-4 shadow-sm border border-slate-800 font-mono text-xs flex flex-col justify-between min-h-[220px]">
+                <div class="space-y-2">
+                    <div class="flex justify-between items-center text-slate-500 text-[10px] border-b border-slate-800 pb-2 mb-2">
+                        <span>main.py</span>
+                        <span class="text-[#10B981]">Python 3</span>
+                    </div>
+                    <p class="text-[#38BDF8]"><span class="text-[#F43F5E]">def</span> <span class="text-[#FACC15]">add</span>(a, b):</p>
+                    <p class="text-[#38BDF8] pl-4"><span class="text-[#F43F5E]">return</span> a + b</p>
+                    <p class="text-slate-500 mt-2">&nbsp;</p>
+                    <p class="text-[#F3F4F6]">a = <span class="text-[#38BDF8]">int</span>(<span class="text-[#FACC15]">input</span>())</p>
+                    <p class="text-[#F3F4F6]">b = <span class="text-[#38BDF8]">int</span>(<span class="text-[#FACC15]">input</span>())</p>
+                    <p class="text-[#F3F4F6]"><span class="text-[#38BDF8]">print</span>(add(a, b))</p>
                 </div>
-                <h3 class="text-white font-semibold mb-2">Instant Grading</h3>
-                <p class="text-gray-400 text-sm leading-relaxed">Code runs automatically in a secure sandbox and gets graded against test cases in seconds.</p>
+                <div class="text-right text-slate-500 text-[9px] pt-4">Lines: 6</div>
             </div>
 
-            <div class="bg-gray-900/80 border border-gray-800 rounded-2xl p-6">
-                <div class="w-10 h-10 bg-emerald-900/50 rounded-lg flex items-center justify-center mb-4">
-                    <svg class="w-5 h-5 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
-                    </svg>
+            <!-- Results Window -->
+            <div class="md:col-span-5 bg-white rounded-2xl p-4 shadow-sm border border-slate-200 flex flex-col justify-between min-h-[220px] text-xs">
+                <div class="space-y-3">
+                    <div class="pb-2 border-b border-slate-100">
+                        <h4 class="font-extrabold text-slate-800">Results</h4>
+                        <p class="text-[10px] text-[#10B981] font-semibold mt-0.5">Passed 4 / 5 test cases</p>
+                    </div>
+                    <div class="space-y-2 text-[10px]">
+                        <div class="flex justify-between items-center">
+                            <span class="text-slate-500">Test Case 1</span>
+                            <span class="text-[#10B981] font-bold">Passed</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-slate-500">Test Case 2</span>
+                            <span class="text-[#10B981] font-bold">Passed</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-slate-500">Test Case 3</span>
+                            <span class="text-[#10B981] font-bold">Passed</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-slate-500">Test Case 4</span>
+                            <span class="text-red-500 font-bold">Failed</span>
+                        </div>
+                        <div class="pl-2 border-l-2 border-red-100 text-[8px] text-slate-400">
+                            Expected: 10 | Got: 9
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-slate-500">Test Case 5</span>
+                            <span class="text-[#10B981] font-bold">Passed</span>
+                        </div>
+                    </div>
                 </div>
-                <h3 class="text-white font-semibold mb-2">Secure Execution</h3>
-                <p class="text-gray-400 text-sm leading-relaxed">All code runs in isolated Docker containers with strict memory, CPU and network limits.</p>
             </div>
-
-            <div class="bg-gray-900/80 border border-gray-800 rounded-2xl p-6">
-                <div class="w-10 h-10 bg-emerald-900/50 rounded-lg flex items-center justify-center mb-4">
-                    <svg class="w-5 h-5 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
-                    </svg>
-                </div>
-                <h3 class="text-white font-semibold mb-2">Detailed Feedback</h3>
-                <p class="text-gray-400 text-sm leading-relaxed">Students see exactly which test cases passed or failed with full output comparison.</p>
-            </div>
-
-            <div class="bg-gray-900/80 border border-gray-800 rounded-2xl p-6">
-                <div class="w-10 h-10 bg-emerald-900/50 rounded-lg flex items-center justify-center mb-4">
-                    <svg class="w-5 h-5 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
-                    </svg>
-                </div>
-                <h3 class="text-white font-semibold mb-2">Assignment Management</h3>
-                <p class="text-gray-400 text-sm leading-relaxed">Lecturers create and manage assignments organised by department and year group.</p>
-            </div>
-
-            <div class="bg-gray-900/80 border border-gray-800 rounded-2xl p-6">
-                <div class="w-10 h-10 bg-emerald-900/50 rounded-lg flex items-center justify-center mb-4">
-                    <svg class="w-5 h-5 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/>
-                    </svg>
-                </div>
-                <h3 class="text-white font-semibold mb-2">Browser Code Editor</h3>
-                <p class="text-gray-400 text-sm leading-relaxed">Write Python directly in the browser with syntax highlighting, line numbers and auto-indentation.</p>
-            </div>
-
-            <div class="bg-gray-900/80 border border-gray-800 rounded-2xl p-6">
-                <div class="w-10 h-10 bg-emerald-900/50 rounded-lg flex items-center justify-center mb-4">
-                    <svg class="w-5 h-5 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                    </svg>
-                </div>
-                <h3 class="text-white font-semibold mb-2">Submission History</h3>
-                <p class="text-gray-400 text-sm leading-relaxed">Students track all past submissions and scores and can resubmit before the deadline.</p>
-            </div>
-
         </div>
     </section>
 
-    <!-- Footer -->
-    <footer class="relative border-t border-gray-800/50 px-8 py-8 text-center mt-8">
-        <p class="text-gray-600 text-sm">CodeBench — Caleb University, Department of Computer Science</p>
-        <p class="text-gray-700 text-xs mt-1">Final Year Project — Oyomi Omokhunu Ayololuwa | 22/11488</p>
+    <!-- IMPACT SECTION -->
+    <section class="max-w-7xl mx-auto w-full px-6 lg:px-8 py-20 border-t border-slate-200 bg-slate-50">
+        <div class="text-center max-w-3xl mx-auto space-y-4 mb-16">
+            <p class="text-xs font-bold uppercase tracking-wider text-emerald-600">WHY LECTURERS LOVE CODEBENCH</p>
+            <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900">Less stress. More impact.</h2>
+            <p class="text-slate-500">We take care of structural testing and logistics so you can focus on educating.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+            <!-- Feature 1 -->
+            <div class="bg-white border border-slate-200/60 p-6 rounded-2xl space-y-3 hover-card">
+                <svg class="w-8 h-8 text-emerald-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                <h3 class="font-bold text-slate-900">Save Hours</h3>
+                <p class="text-slate-500 text-sm leading-relaxed">Automate grading and marksheet logging. Spend class time resolving conceptual hurdles.</p>
+            </div>
+            <!-- Feature 2 -->
+            <div class="bg-white border border-slate-200/60 p-6 rounded-2xl space-y-3 hover-card">
+                <svg class="w-8 h-8 text-emerald-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                </svg>
+                <h3 class="font-bold text-slate-900">Accurate & Fair</h3>
+                <p class="text-slate-500 text-sm leading-relaxed">Every student is assessed against identical test case constraints. No grading bias.</p>
+            </div>
+            <!-- Feature 3 -->
+            <div class="bg-white border border-slate-200/60 p-6 rounded-2xl space-y-3 hover-card">
+                <svg class="w-8 h-8 text-emerald-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                </svg>
+                <h3 class="font-bold text-slate-900">Secure Execution</h3>
+                <p class="text-slate-500 text-sm leading-relaxed">Run unsafe student code inside resource-restricted sandbox container environments.</p>
+            </div>
+            <!-- Feature 4 -->
+            <div class="bg-white border border-slate-200/60 p-6 rounded-2xl space-y-3 hover-card">
+                <svg class="w-8 h-8 text-emerald-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                </svg>
+                <h3 class="font-bold text-slate-900">Track Everything</h3>
+                <p class="text-slate-500 text-sm leading-relaxed">Monitor overall classroom averages, individual struggles, and submission volumes.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="mt-auto bg-slate-900 text-slate-400 py-12 border-t border-slate-800 text-center text-sm">
+        <div class="max-w-7xl mx-auto px-6 space-y-4">
+            <a href="/" class="inline-flex justify-center items-center gap-2 select-none text-white group">
+                <svg class="h-6 w-auto transform group-hover:scale-105 transition-transform duration-200" viewBox="8 8 46 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M18 10C14 10 13 12 13 15V18C13 20 11 20 10 20C11 20 13 20 13 22V25C13 28 14 30 18 30" stroke="#10B981" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M35 14H28C26.8954 14 26 14.8954 26 16V24C26 25.1046 26.8954 26 28 26H35" stroke="#ffffff" stroke-width="3" stroke-linecap="round"/>
+                    <path d="M29 20L31 22L34 17" stroke="#10B981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M43 10C47 10 48 12 48 15V18C48 20 50 20 51 20C50 20 48 20 48 22V25C48 28 47 30 43 30" stroke="#10B981" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span class="font-bold">CodeBench</span>
+            </a>
+            <p class="text-xs text-slate-500">CodeBench — Caleb University · Final Year Project</p>
+        </div>
     </footer>
+</div>
 
 </body>
 </html>

@@ -1,0 +1,114 @@
+{% extends 'base.html' %}
+
+{% block title %}All Submissions | CodeBench{% endblock %}
+
+{% block sidebar %}
+    <a href="/accounts/lecturer/dashboard/"
+       class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 hover:bg-slate-50 hover:text-slate-900 text-sm font-semibold transition-all-300">
+        <svg class="w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1h6"/>
+        </svg>
+        Dashboard
+    </a>
+    <a href="/assignments/manage/"
+       class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 hover:bg-slate-50 hover:text-slate-900 text-sm font-semibold transition-all-300">
+        <svg class="w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2"/>
+        </svg>
+        Assignments
+    </a>
+    <a href="/assignments/create/"
+       class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 hover:bg-slate-50 hover:text-slate-900 text-sm font-semibold transition-all-300">
+        <svg class="w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/>
+        </svg>
+        Create Assignment
+    </a>
+    <a href="/assignments/submissions/"
+       class="flex items-center gap-3 px-4 py-3 rounded-xl bg-emerald-50 text-emerald-700 text-sm font-bold shadow-sm border border-emerald-100/50">
+        <svg class="w-4 h-4 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+        </svg>
+        All Submissions
+    </a>
+    <a href="/accounts/classes/"
+       class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 hover:bg-slate-50 hover:text-slate-900 text-sm font-semibold transition-all-300">
+        <svg class="w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
+        </svg>
+        My Classes
+    </a>
+{% endblock %}
+
+{% block content %}
+
+<!-- HEADER -->
+<div class="flex flex-col sm:flex-row justify-between sm:items-center gap-4 mb-8">
+    <div>
+        <h2 class="text-3xl font-extrabold text-slate-900 tracking-tight">All Submissions</h2>
+        <p class="text-slate-500 mt-1 text-sm font-medium">Select a class to view class-specific assignment grades and details.</p>
+    </div>
+    <a href="/assignments/submissions/export/"
+       class="bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 hover:text-slate-900 px-5 py-3 rounded-xl text-sm font-bold shadow-sm transition-all self-start sm:self-auto flex items-center gap-1.5">
+        <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+        </svg>
+        Export All (CSV)
+    </a>
+</div>
+
+<!-- STATS -->
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8">
+    <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
+        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Total Submissions</p>
+        <p class="text-3xl font-extrabold text-slate-950 mt-1.5 leading-none">{{ total }}</p>
+    </div>
+    <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
+        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Average Grade</p>
+        <p class="text-3xl font-extrabold text-emerald-600 mt-1.5 leading-none">{{ avg_score }} <span class="text-xs text-slate-400 font-semibold uppercase">out of 100</span></p>
+    </div>
+</div>
+
+<!-- CLASSES GRID -->
+{% if class_cards %}
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    {% for card in class_cards %}
+    <a href="/assignments/submissions/{{ card.course_class.pk }}/"
+       class="group bg-white border border-slate-200 rounded-2xl p-6 hover:shadow-md hover:border-emerald-300 transition-all duration-200 block">
+        <h3 class="text-lg font-bold text-slate-950 group-hover:text-emerald-600 transition-colors">{{ card.course_class.name }}</h3>
+        
+        <div class="flex justify-between items-end mt-6">
+            <div>
+                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Submissions</p>
+                <p class="text-2xl font-extrabold text-slate-900 mt-1 leading-none">{{ card.total }}</p>
+            </div>
+            <div class="text-right">
+                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Avg Score</p>
+                <p class="text-2xl font-extrabold text-emerald-600 mt-1 leading-none">{{ card.avg_score }}</p>
+            </div>
+        </div>
+        
+        <div class="text-xs font-bold text-slate-400 group-hover:text-emerald-600 transition-colors mt-6 pt-4 border-t border-slate-100 flex items-center justify-between">
+            <span>View Submissions</span>
+            <span>→</span>
+        </div>
+    </a>
+    {% endfor %}
+</div>
+{% else %}
+<div class="bg-white border border-slate-200 border-dashed rounded-2xl p-12 text-center shadow-sm">
+    <div class="w-12 h-12 bg-slate-50 rounded-xl flex items-center justify-center mx-auto mb-4 border border-slate-100">
+        <svg class="w-6 h-6 text-slate-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
+        </svg>
+    </div>
+    <h3 class="text-base font-bold text-slate-900 mb-1">No submissions yet</h3>
+    <p class="text-slate-500 text-sm max-w-sm mx-auto">Create classes and assignments to start collecting student answers.</p>
+</div>
+{% endif %}
+
+{% if no_class_count %}
+<p class="text-xs font-semibold text-slate-400 mt-6">{{ no_class_count }} submission{{ no_class_count|pluralize }} from assignments with no class assigned.</p>
+{% endif %}
+
+{% endblock %}

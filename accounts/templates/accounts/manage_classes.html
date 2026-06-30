@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+
+{% block title %}My Classes | CodeBench{% endblock %}
+
+{% block sidebar %}
+    <a href="/accounts/lecturer/dashboard/"
+       class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 hover:bg-slate-50 hover:text-slate-900 text-sm font-semibold transition-all-300">
+        <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1h6"/>
+        </svg>
+        Dashboard
+    </a>
+    <a href="/assignments/manage/"
+       class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 hover:bg-slate-50 hover:text-slate-900 text-sm font-semibold transition-all-300">
+        <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2"/>
+        </svg>
+        Assignments
+    </a>
+    <a href="/assignments/create/"
+       class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 hover:bg-slate-50 hover:text-slate-900 text-sm font-semibold transition-all-300">
+        <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/>
+        </svg>
+        Create Assignment
+    </a>
+    <a href="/assignments/submissions/"
+       class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 hover:bg-slate-50 hover:text-slate-900 text-sm font-semibold transition-all-300">
+        <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+        </svg>
+        All Submissions
+    </a>
+    <a href="/accounts/classes/"
+       class="flex items-center gap-3 px-4 py-3 rounded-xl bg-emerald-50 text-emerald-700 text-sm font-bold shadow-sm border border-emerald-100/50">
+        <svg class="w-4 h-4 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
+        </svg>
+        My Classes
+    </a>
+{% endblock %}
+
+{% block content %}
+    <div class="flex justify-between items-center mb-8">
+        <div>
+            <h2 class="text-3xl font-extrabold text-slate-900 tracking-tight">My Classes</h2>
+            <p class="text-slate-500 mt-1 text-sm font-medium">Manage your classes and share join codes with students.</p>
+        </div>
+        <a href="/accounts/classes/create/"
+           class="flex items-center gap-2 bg-[#10B981] hover:bg-[#059669] text-white px-5 py-2.5 rounded-xl text-sm font-bold transition-all-300 shadow-sm shadow-emerald-500/10">
+            + Create Class
+        </a>
+    </div>
+
+    {% if classes %}
+        <div class="grid gap-5">
+            {% for class in classes %}
+                <div class="bg-white border border-slate-200 rounded-2xl p-6 transition-all-300 hover:shadow-md hover:border-slate-300">
+                    <div class="flex justify-between items-start">
+                        <div class="space-y-1">
+                            <h3 class="text-slate-900 font-extrabold text-lg leading-tight">{{ class.name }}</h3>
+                            <p class="text-slate-500 text-xs font-semibold bg-slate-50 border border-slate-200 px-2 py-0.5 rounded-md inline-block">
+                                {{ class.members.count }} student{{ class.members.count|pluralize }} enrolled
+                            </p>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Join Code</p>
+                            <span class="bg-slate-50 border border-slate-200 text-emerald-600 font-mono font-bold px-4 py-2.5 rounded-xl text-sm tracking-widest shadow-inner">
+                                {{ class.code }}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="flex flex-wrap gap-3 mt-6 pt-4 border-t border-slate-100 items-center text-xs font-semibold text-slate-400">
+                        <a href="/accounts/classes/{{ class.pk }}/"
+                           class="text-emerald-600 hover:text-emerald-700 hover:underline">
+                            Manage Class
+                        </a>
+                        <span class="text-slate-200">|</span>
+                        <span>Created {{ class.created_at|date:"M d, Y" }}</span>
+                        <span class="text-slate-200">|</span>
+                        <form method="POST" action="/accounts/classes/{{ class.pk }}/delete/"
+                               class="inline"
+                               onsubmit="return confirm('Delete {{ class.name }}? This will also delete all assignments and submissions under this class. This cannot be undone.')">
+                            {% csrf_token %}
+                            <button type="submit" class="text-red-500 hover:text-red-600 hover:underline">Delete Class</button>
+                        </form>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="bg-white border border-slate-200 rounded-2xl p-12 text-center border-dashed">
+            <p class="text-slate-500 text-sm font-semibold mb-3">No classes yet.</p>
+            <a href="/accounts/classes/create/" class="text-xs bg-emerald-50 border border-emerald-100 text-emerald-700 font-bold px-4 py-2.5 rounded-xl transition-all hover:bg-emerald-100">
+                Create your first class
+            </a>
+        </div>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,128 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ course_class.name }} | CodeBench{% endblock %}
+
+{% block sidebar %}
+    <a href="/accounts/lecturer/dashboard/"
+       class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 hover:bg-slate-50 hover:text-slate-900 text-sm font-semibold transition-all-300">
+        <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1h6"/>
+        </svg>
+        Dashboard
+    </a>
+    <a href="/assignments/manage/"
+       class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 hover:bg-slate-50 hover:text-slate-900 text-sm font-semibold transition-all-300">
+        <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2"/>
+        </svg>
+        Assignments
+    </a>
+    <a href="/assignments/create/"
+       class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 hover:bg-slate-50 hover:text-slate-900 text-sm font-semibold transition-all-300">
+        <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/>
+        </svg>
+        Create Assignment
+    </a>
+    <a href="/assignments/submissions/"
+       class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 hover:bg-slate-50 hover:text-slate-900 text-sm font-semibold transition-all-300">
+        <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+        </svg>
+        All Submissions
+    </a>
+    <a href="/accounts/classes/"
+       class="flex items-center gap-3 px-4 py-3 rounded-xl bg-emerald-50 text-emerald-700 text-sm font-bold shadow-sm border border-emerald-100/50">
+        <svg class="w-4 h-4 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
+        </svg>
+        My Classes
+    </a>
+{% endblock %}
+
+{% block content %}
+    <div class="mb-8">
+        <a href="/accounts/classes/" class="text-sm font-semibold text-slate-500 hover:text-slate-900 transition-colors flex items-center gap-1.5 mb-4 group select-none">
+            <svg class="w-4 h-4 transform group-hover:-translate-x-0.5 transition-transform" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+            </svg>
+            Back to Classes
+        </a>
+        <div class="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4">
+            <div>
+                <h2 class="text-3xl font-extrabold text-slate-900 tracking-tight">{{ course_class.name }}</h2>
+                <p class="text-slate-500 mt-1 text-sm font-medium">Created on {{ course_class.created_at|date:"M d, Y" }}</p>
+            </div>
+            <a href="/accounts/classes/{{ course_class.pk }}/edit/"
+               class="bg-white border border-slate-200 hover:border-slate-300 text-slate-700 font-semibold px-4 py-2.5 rounded-xl text-sm transition-all duration-200 shadow-sm flex items-center justify-center gap-2 self-start">
+                <svg class="w-4 h-4 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                </svg>
+                Edit Class
+            </a>
+        </div>
+    </div>
+
+    <!-- Join code card -->
+    <div class="bg-white border border-slate-200 rounded-2xl p-6 lg:p-8 mb-8 shadow-sm">
+        <h3 class="text-lg font-bold text-slate-900 mb-2">Class Join Code</h3>
+        <p class="text-slate-500 text-sm mb-5 font-medium">Share this code with your students so they can join this class.</p>
+        <div class="flex flex-col sm:flex-row sm:items-center gap-4">
+            <span class="bg-slate-50 border border-slate-200 text-emerald-600 font-mono font-bold px-6 py-3.5 rounded-xl text-3xl tracking-widest shadow-inner inline-block text-center sm:text-left self-start">
+                {{ course_class.code }}
+            </span>
+            <p class="text-slate-400 text-xs font-semibold leading-relaxed max-w-sm">Students can go to their dashboard, click "Join a Class", and enter this code to enroll immediately.</p>
+        </div>
+    </div>
+
+    <!-- Members table -->
+    <div class="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
+        <div class="p-6 border-b border-slate-100 flex justify-between items-center">
+            <h3 class="text-lg font-bold text-slate-900">Students <span class="text-slate-400 font-semibold text-sm ml-1">({{ members.count }} enrolled)</span></h3>
+        </div>
+        {% if members %}
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm text-left">
+                    <thead>
+                        <tr class="bg-slate-50 text-slate-500 font-bold border-b border-slate-200 text-xs uppercase tracking-wider select-none">
+                            <th class="px-6 py-4 font-bold">Full Name</th>
+                            <th class="px-6 py-4 font-bold">Matric Number</th>
+                            <th class="px-6 py-4 font-bold">Department</th>
+                            <th class="px-6 py-4 font-bold">Year</th>
+                            <th class="px-6 py-4 font-bold">Joined</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100 text-slate-700">
+                        {% for member in members %}
+                        <tr class="hover:bg-slate-50/50 transition-all duration-150">
+                            <td class="px-6 py-4">
+                                <p class="text-slate-900 font-semibold text-sm">{{ member.student.full_name|default:member.student.username }}</p>
+                                <p class="text-slate-400 text-xs font-medium">{{ member.student.email }}</p>
+                            </td>
+                            <td class="px-6 py-4 font-medium text-slate-800">
+                                {{ member.student.matric_number|default:"—" }}
+                            </td>
+                            <td class="px-6 py-4 font-medium text-slate-600">
+                                {{ member.student.department|default:"—" }}
+                            </td>
+                            <td class="px-6 py-4">
+                                <span class="px-2 py-0.5 rounded-md text-xs font-semibold bg-slate-50 border border-slate-200/60 text-slate-500">
+                                    {% if member.student.year %}Year {{ member.student.year }}{% else %}—{% endif %}
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 font-semibold text-xs text-slate-400">
+                                {{ member.joined_at|date:"M d, Y" }}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <div class="p-12 text-center text-slate-400 font-semibold">
+                <p class="text-sm">No students have joined this class yet.</p>
+                <p class="text-xs mt-1 text-slate-300">Share the join code above to get started.</p>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

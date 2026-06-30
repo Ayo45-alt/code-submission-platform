@@ -4,92 +4,176 @@
 {% block title %}Dashboard | CodeBench{% endblock %}
 
 {% block sidebar %}
-    <a href="/accounts/student/dashboard/" class="flex items-center gap-3 px-4 py-3 rounded-lg bg-emerald-600 text-white text-sm font-medium">
-        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+    <a href="/accounts/student/dashboard/"
+       class="flex items-center gap-3 px-4 py-3 rounded-xl bg-emerald-50 text-emerald-700 text-sm font-bold shadow-sm border border-emerald-100/50">
+        <svg class="w-4 h-4 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1h6"/>
         </svg>
         Dashboard
     </a>
-    <a href="/assignments/" class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-400 hover:bg-gray-800 text-sm transition">
-        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+
+    <a href="/assignments/"
+       class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 hover:bg-slate-50 hover:text-slate-900 text-sm font-semibold transition-all-300">
+        <svg class="w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2"/>
         </svg>
         Assignments
     </a>
-    <a href="/submissions/history/" class="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-400 hover:bg-gray-800 text-sm transition">
-        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+
+    <a href="/submissions/history/"
+       class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 hover:bg-slate-50 hover:text-slate-900 text-sm font-semibold transition-all-300">
+        <svg class="w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
             <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
         </svg>
         My Submissions
     </a>
+    <a href="/accounts/classes/join/"
+       class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-500 hover:bg-slate-50 hover:text-slate-900 text-sm font-semibold transition-all-300">
+        <svg class="w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/>
+        </svg>
+        Join a Class
+    </a>
 {% endblock %}
 
 {% block content %}
-    <div class="mb-8">
-        <h2 class="text-3xl font-bold text-white">Welcome back, {{ user.username }}</h2>
-        <p class="text-gray-400 mt-1">Here are your active assignments.</p>
+
+<!-- HEADER -->
+<div class="mb-8">
+    <h2 class="text-3xl font-extrabold text-slate-900 tracking-tight">
+        Welcome back, <span class="text-emerald-600 font-extrabold">{{ user.username }}</span>
+    </h2>
+    <p class="text-slate-500 mt-1 text-sm font-medium">
+        Track your progress, submit assignments, and improve your coding skills.
+    </p>
+</div>
+
+<!-- STATS -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+
+    <div class="glass-card rounded-2xl p-6 relative overflow-hidden bg-white">
+        <div class="flex justify-between items-center mb-4">
+            <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Active Assignments</p>
+            <div class="w-9 h-9 rounded-xl bg-emerald-50 border border-emerald-100 flex items-center justify-center">
+                <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2"/>
+                </svg>
+            </div>
+        </div>
+        <p class="text-3xl font-extrabold text-slate-800">{{ total_active }}</p>
     </div>
 
-    <!-- Stats cards -->
-    <div class="grid grid-cols-3 gap-6 mb-8">
-        <div class="bg-gray-900 border border-gray-800 rounded-xl p-6">
-            <p class="text-gray-400 text-sm">Active Assignments</p>
-            <p class="text-3xl font-bold text-white mt-2">{{ total_active }}</p>
+    <div class="glass-card rounded-2xl p-6 relative overflow-hidden bg-white">
+        <div class="flex justify-between items-center mb-4">
+            <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Submitted</p>
+            <div class="w-9 h-9 rounded-xl bg-emerald-50 border border-emerald-100 flex items-center justify-center">
+                <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+                </svg>
+            </div>
         </div>
-        <div class="bg-gray-900 border border-gray-800 rounded-xl p-6">
-            <p class="text-gray-400 text-sm">Submitted</p>
-            <p class="text-3xl font-bold text-white mt-2">{{ total_submitted }}</p>
-        </div>
-        <div class="bg-gray-900 border border-gray-800 rounded-xl p-6">
-            <p class="text-gray-400 text-sm">Average Score</p>
-            <p class="text-3xl font-bold text-white mt-2">{{ average_score }}%</p>
-        </div>
+        <p class="text-3xl font-extrabold text-slate-800">{{ total_submitted }}</p>
     </div>
 
-    <!-- Active assignments -->
-    <div class="bg-gray-900 border border-gray-800 rounded-xl p-6">
-        <h3 class="text-lg font-semibold text-white mb-4">Assignments</h3>
-        {% if active_assignments %}
-            <div class="grid gap-3">
-                {% for assignment in active_assignments %}
-                    {% with submission=submission_map|get_item:assignment.pk %}
-                    <a href="{% if submission %}/submissions/result/{{ submission.pk }}/{% else %}/assignments/{{ assignment.pk }}/{% endif %}"
-                       class="block p-4 rounded-lg border transition
-                       {% if submission %}
-                           bg-gray-800 border-emerald-800/50 hover:border-emerald-600
-                       {% elif assignment.due_date < now %}
-                           bg-red-950/20 border-red-900/50 hover:border-red-700
-                       {% else %}
-                           bg-gray-800 border-gray-700 hover:border-emerald-600
-                       {% endif %}">
-                        <div class="flex justify-between items-start">
-                            <p class="text-white font-medium">{{ assignment.title }}</p>
-                            <div class="text-right ml-4 shrink-0">
-                                {% if submission %}
-                                    <span class="text-xs bg-emerald-900/50 text-emerald-400 px-2 py-1 rounded-md">Submitted</span>
-                                    <p class="text-sm text-white mt-1 font-semibold">{{ submission.score }}/{{ assignment.max_score }}</p>
-                                {% elif assignment.due_date < now %}
-                                    <span class="text-xs bg-red-900/50 text-red-400 px-2 py-1 rounded-md">Deadline Passed</span>
-                                    <p class="text-sm text-red-400 mt-1">{{ assignment.due_date|date:"M d, Y" }}</p>
-                                {% else %}
-                                    <p class="text-xs text-gray-500">Due</p>
-                                    <p class="text-sm text-emerald-400">{{ assignment.due_date|date:"M d, Y" }}</p>
-                                {% endif %}
+    <div class="glass-card rounded-2xl p-6 relative overflow-hidden bg-white">
+        <div class="flex justify-between items-center mb-4">
+            <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Average Score</p>
+            <div class="w-9 h-9 rounded-xl bg-emerald-50 border border-emerald-100 flex items-center justify-center">
+                <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                </svg>
+            </div>
+        </div>
+        <p class="text-3xl font-extrabold text-slate-800">{{ average_score }}%</p>
+    </div>
+
+</div>
+
+<!-- ASSIGNMENTS -->
+<div class="bg-white border border-[#E2E8F0] rounded-2xl p-6 lg:p-8 shadow-sm">
+
+    <div class="flex justify-between items-center mb-6">
+        <h3 class="text-lg font-bold text-slate-900">Your Assignments</h3>
+        <span class="text-xs text-slate-400 font-semibold tracking-wider uppercase select-none">Click to open</span>
+    </div>
+
+    {% if active_assignments %}
+
+        <div class="space-y-4">
+
+            {% for assignment in active_assignments %}
+                {% with submission=submission_map|get_item:assignment.pk %}
+
+                <a href="{% if submission %}/submissions/result/{{ submission.pk }}/{% else %}/assignments/{{ assignment.pk }}/{% endif %}"
+                   class="block p-5 rounded-xl border transition-all-300 hover:-translate-y-0.5 hover:shadow-md
+                   {% if submission %}
+                       bg-emerald-50/20 border-emerald-100 hover:border-emerald-300
+                   {% elif assignment.due_date < now %}
+                       bg-red-50/20 border-red-100 hover:border-red-300
+                   {% else %}
+                       bg-white border-slate-200 hover:border-emerald-300
+                   {% endif %}">
+
+                    <div class="flex justify-between items-center gap-4">
+
+                        <!-- LEFT -->
+                        <div class="space-y-1">
+                            <p class="text-slate-800 font-bold text-base leading-tight">{{ assignment.title }}</p>
+
+                            <div class="flex flex-wrap items-center gap-2 text-xs text-slate-400 font-semibold">
+                                <span class="text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-100/50">{{ assignment.department }}</span>
+                                <span>•</span>
+                                <span>Year {{ assignment.year }}</span>
+                                <span>•</span>
+                                <span>Posted {{ assignment.created_at|date:"M d, Y" }}</span>
                             </div>
                         </div>
-                        <div class="flex gap-2 mt-2">
-                            <span class="text-xs text-emerald-400">{{ assignment.department }}</span>
-                            <span class="text-xs text-gray-500">•</span>
-                            <span class="text-xs text-gray-400">Year {{ assignment.year }}</span>
-                            <span class="text-xs text-gray-500">•</span>
-                            <span class="text-xs text-gray-500">Posted {{ assignment.created_at|date:"M d, Y" }}</span>
+
+                        <!-- RIGHT STATUS -->
+                        <div class="text-right shrink-0">
+
+                            {% if submission %}
+                                <span class="text-xs px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 font-semibold border border-emerald-100">
+                                    Submitted
+                                </span>
+                                <p class="text-sm text-slate-900 mt-2 font-bold">
+                                    {{ submission.score }}<span class="text-slate-400 text-xs font-normal">/{{ assignment.max_score }}</span>
+                                </p>
+
+                            {% elif assignment.due_date < now %}
+                                <span class="text-xs px-2.5 py-1 rounded-full bg-red-50 text-red-700 font-semibold border border-red-100">
+                                    Closed
+                                </span>
+                                <p class="text-sm text-red-600 mt-2 font-bold">
+                                    {{ assignment.due_date|date:"M d, Y" }}
+                                </p>
+
+                            {% else %}
+                                <span class="text-xs px-2.5 py-1 rounded-full bg-slate-50 text-slate-600 font-semibold border border-slate-200">
+                                    Due
+                                </span>
+                                <p class="text-sm text-emerald-600 mt-2 font-bold">
+                                    {{ assignment.due_date|date:"M d, Y" }}
+                                </p>
+                            {% endif %}
+
                         </div>
-                    </a>
-                    {% endwith %}
-                {% endfor %}
-            </div>
-        {% else %}
-            <p class="text-gray-500 text-sm">No active assignments yet. Check back later!</p>
-        {% endif %}
-    </div>
+
+                    </div>
+
+                </a>
+
+                {% endwith %}
+            {% endfor %}
+
+        </div>
+
+    {% else %}
+        <div class="text-center py-12 border border-dashed border-slate-200 rounded-2xl">
+            <p class="text-slate-400 text-sm font-semibold">No assignments yet. You're all caught up!</p>
+        </div>
+    {% endif %}
+
+</div>
+
 {% endblock %}

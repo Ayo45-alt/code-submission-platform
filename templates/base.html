@@ -1,70 +1,185 @@
+{% load static %}
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}CodeBench{% endblock %}</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="{% static 'js/tailwind.js' %}"></script>
+
     <script>
         tailwind.config = {
             darkMode: 'class',
             theme: {
                 extend: {
                     fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        mono: ['"JetBrains Mono"', 'monospace']
+                    },
+                    colors: {
+                        brand: {
+                            50: '#F0FDF4',
+                            100: '#DCFCE7',
+                            200: '#BBF7D0',
+                            500: '#10B981',
+                            600: '#059669',
+                            700: '#047857',
+                            800: '#065F46',
+                            950: '#022C22'
+                        }
                     }
                 }
             }
         }
     </script>
+
     <style>
-        .hero-glow {
-            background: radial-gradient(ellipse 80% 50% at 50% -20%, rgba(16, 185, 129, 0.08), transparent);
+        :root {
+            --bg: #F8FAFC;
+            --surface: #FFFFFF;
+            --border: #F1F5F9;
+            --primary: #10B981;
+            --primary-hover: #059669;
+            --muted: #64748B;
+            --text: #0F172A;
+            --card-shadow: 0 4px 20px -2px rgba(51, 65, 85, 0.05), 0 2px 6px -1px rgba(51, 65, 85, 0.03);
+            --hover-shadow: 0 10px 30px -4px rgba(51, 65, 85, 0.08), 0 4px 12px -2px rgba(51, 65, 85, 0.04);
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: "Plus Jakarta Sans", sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* Custom Scrollbars */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #F1F5F9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #CBD5E1;
+            border-radius: 9999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94A3B8;
+        }
+
+        /* Custom Glass Card Styling */
+        .glass-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            box-shadow: var(--card-shadow);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .glass-card:hover {
+            box-shadow: var(--hover-shadow);
+        }
+
+        /* Smooth UI transitions */
+        .transition-all-300 {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
     </style>
 </head>
-<body class="bg-gray-950 text-gray-100 min-h-screen flex font-sans">
 
-    <div class="hero-glow fixed inset-0 pointer-events-none"></div>
+<body class="bg-[var(--bg)] text-[var(--text)] flex min-h-screen">
 
-    <!-- Sidebar -->
-    <aside class="w-64 bg-gray-900/80 border-r border-gray-800/50 flex flex-col p-6 fixed h-full z-10">
-        
-        <!-- Logo -->
-        <div class="mb-10 flex items-center gap-2">
-            <svg class="w-6 h-6 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+<!-- SIDEBAR -->
+<aside class="w-64 fixed h-full bg-white border-r border-[#E2E8F0] p-6 flex flex-col justify-between z-30">
+    <div>
+        <!-- LOGO -->
+        <a href="/" class="flex items-center gap-2 mb-10 group select-none">
+            <svg class="h-9 w-auto transform group-hover:scale-[1.02] transition-transform duration-200" viewBox="8 8 46 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Green open brace { -->
+                <path d="M18 10C14 10 13 12 13 15V18C13 20 11 20 10 20C11 20 13 20 13 22V25C13 28 14 30 18 30" stroke="#10B981" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                <!-- C Container -->
+                <path d="M35 14H28C26.8954 14 26 14.8954 26 16V24C26 25.1046 26.8954 26 28 26H35" stroke="#0F172A" stroke-width="3" stroke-linecap="round"/>
+                <!-- Green Checkmark inside C -->
+                <path d="M29 20L31 22L34 17" stroke="#10B981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <!-- Green close brace } -->
+                <path d="M43 10C47 10 48 12 48 15V18C48 20 50 20 51 20C50 20 48 20 48 22V25C48 28 47 30 43 30" stroke="#10B981" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
             <div>
-                <h1 class="text-lg font-bold tracking-tight leading-none">
-                    <span class="text-white">Code</span><span class="text-emerald-400">Bench</span>
-                </h1>
-                <p class="text-xs text-gray-500 mt-0.5">Python Assessment Platform</p>
+                <h1 class="font-bold text-[#0F172A] leading-none text-lg">CodeBench</h1>
+                <p class="text-[9px] text-[var(--muted)] tracking-wider uppercase font-bold mt-1">Assessment Platform</p>
+            </div>
+        </a>
+
+        <!-- NAV -->
+        <nav class="flex flex-col gap-1 text-sm font-medium">
+            {% block sidebar %}
+            <a class="px-4 py-3 rounded-xl flex items-center gap-3 transition-all-300 hover:bg-slate-50 text-[var(--muted)] hover:text-[var(--text)]" href="#">
+                Dashboard
+            </a>
+            <a class="px-4 py-3 rounded-xl flex items-center gap-3 transition-all-300 hover:bg-slate-50 text-[var(--muted)] hover:text-[var(--text)]" href="#">
+                Assignments
+            </a>
+            <a class="px-4 py-3 rounded-xl flex items-center gap-3 transition-all-300 hover:bg-slate-50 text-[var(--muted)] hover:text-[var(--text)]" href="#">
+                Submissions
+            </a>
+            {% endblock %}
+        </nav>
+    </div>
+
+    <!-- USER -->
+    <div class="text-sm">
+        <div class="border-t border-[#F1F5F9] pt-5 flex items-center gap-3">
+            <a href="/accounts/profile/"
+               class="w-10 h-10 rounded-full bg-emerald-50 border border-emerald-100 flex items-center justify-center text-emerald-600 font-bold text-sm hover:bg-emerald-100 transition-all-300 shrink-0 shadow-sm">
+                {{ user.username|first|upper }}
+            </a>
+            <div class="min-w-0 flex-1">
+                <p class="font-semibold text-slate-800 truncate">{{ user.username }}</p>
+                <p class="text-xs text-emerald-600 font-medium capitalize">{{ user.role }}</p>
             </div>
         </div>
+        <a href="/accounts/logout/" class="text-xs text-red-500 font-semibold hover:text-red-600 transition-all-300 block mt-4 px-2 hover:underline">
+            Logout
+        </a>
+    </div>
+</aside>
 
-        <!-- Navigation -->
-        <nav class="flex flex-col gap-1 flex-1">
-            {% block sidebar %}{% endblock %}
-        </nav>
-
-        <!-- User info at bottom -->
-        <div class="border-t border-gray-800/50 pt-4 mt-4">
-            <p class="text-sm font-medium text-white">{{ user.username }}</p>
-            <p class="text-xs text-emerald-400 capitalize mt-0.5">{{ user.role }}</p>
-            <a href="/accounts/logout/" 
-               class="text-xs text-gray-500 hover:text-red-400 mt-3 block transition">
-               Logout
-            </a>
+<!-- MAIN -->
+<main class="ml-64 flex-1 p-8 lg:p-12 min-h-screen flex flex-col">
+    {% if messages %}
+        <div class="mb-8 space-y-3">
+            {% for message in messages %}
+            <div class="px-5 py-4 rounded-2xl border text-sm flex items-center justify-between shadow-sm animate-fade-in
+                {% if message.tags == 'error' %}
+                    bg-red-50 border-red-100 text-red-700
+                {% else %}
+                    bg-emerald-50 border-emerald-100 text-emerald-700
+                {% endif %}">
+                <div class="flex items-center gap-3">
+                    {% if message.tags == 'error' %}
+                    <svg class="w-5 h-5 text-red-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                    </svg>
+                    {% else %}
+                    <svg class="w-5 h-5 text-emerald-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                    {% endif %}
+                    <span class="font-medium">{{ message }}</span>
+                </div>
+            </div>
+            {% endfor %}
         </div>
+    {% endif %}
 
-    </aside>
-
-    <!-- Main content -->
-    <main class="ml-64 flex-1 p-8 relative">
+    <div class="flex-1">
         {% block content %}{% endblock %}
-    </main>
+    </div>
+</main>
 
 </body>
 </html>
