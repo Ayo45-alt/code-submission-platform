@@ -125,43 +125,44 @@
                     </span>
                 {% endif %}
             </div>
+            
+            <!-- Code Editor -->
             <div id="editor" class="text-sm"></div>
-        </div>
 
-        <!-- Run Code Console Panel -->
-        <div class="mt-4 bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm flex flex-col">
-            <!-- Tabs Header -->
-            <div class="flex border-b border-slate-200 bg-slate-50/50 text-xs font-bold text-slate-500 select-none">
-                <button type="button" id="tab-input-btn" class="px-5 py-3 border-r border-slate-200 bg-white text-emerald-700 border-b-2 border-b-emerald-600 focus:outline-none">
-                    Custom Input
-                </button>
-                <button type="button" id="tab-output-btn" class="px-5 py-3 border-r border-slate-200 hover:text-slate-900 transition-colors focus:outline-none">
-                    Console Output
-                </button>
-            </div>
-
-            <!-- Tab Content -->
-            <div class="p-5">
-                <!-- Custom Input Area -->
-                <div id="panel-input" class="space-y-2">
-                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Provide stdin input for your Python script:</p>
-                    <textarea id="custom-input-data" rows="3"
-                        class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-slate-800 font-mono text-xs focus:outline-none focus:border-emerald-500 placeholder-slate-450"
-                        placeholder="e.g. 5&#10;10"></textarea>
+            <!-- Integrated Console & Input Panel (VS Code Style) -->
+            <div class="border-t border-slate-700 bg-slate-900 flex flex-col">
+                <!-- Panel Tabs Header -->
+                <div class="flex border-b border-slate-800/80 bg-slate-950/20 text-[10px] font-bold text-slate-400 uppercase tracking-wider select-none">
+                    <button type="button" id="tab-input-btn" class="px-5 py-3.5 border-r border-slate-800 bg-slate-950 text-emerald-400 border-b-2 border-b-emerald-500 focus:outline-none">
+                        Custom Input
+                    </button>
+                    <button type="button" id="tab-output-btn" class="px-5 py-3.5 border-r border-slate-800 hover:text-slate-200 transition-colors focus:outline-none">
+                        Console Output
+                    </button>
                 </div>
-
-                <!-- Console Output Area -->
-                <div id="panel-output" class="hidden space-y-3">
-                    <div id="console-status" class="flex items-center gap-2 text-xs font-bold text-slate-500">
-                        <span class="w-2 h-2 rounded-full bg-slate-300"></span>
-                        Ready to run code
+                
+                <!-- Panel Content -->
+                <div class="p-4 bg-[#090D16]/30">
+                    <!-- Custom Input Area -->
+                    <div id="panel-input" class="space-y-2">
+                        <textarea id="custom-input-data" rows="3"
+                            class="w-full bg-[#090D16] border border-slate-800 rounded-xl p-3 text-slate-200 font-mono text-xs focus:outline-none focus:border-emerald-500 placeholder-slate-600"
+                            placeholder="Provide standard inputs for stdin (one per line)..."></textarea>
                     </div>
-                    <div class="bg-slate-950 border border-slate-900 rounded-xl p-4 font-mono text-xs text-slate-300 leading-relaxed overflow-x-auto min-h-[100px] relative">
-                        <div id="console-loading" class="hidden absolute inset-0 bg-slate-950/80 flex items-center justify-center font-semibold text-slate-400">
-                            Running code...
+
+                    <!-- Console Output Area -->
+                    <div id="panel-output" class="hidden space-y-2 relative">
+                        <div id="console-status" class="flex items-center gap-2 text-[10px] font-bold text-slate-500 uppercase tracking-wider">
+                            <span class="w-1.5 h-1.5 rounded-full bg-slate-600"></span>
+                            Ready to run code
                         </div>
-                        <pre id="console-stdout" class="whitespace-pre-wrap"></pre>
-                        <pre id="console-stderr" class="whitespace-pre-wrap text-red-400 mt-2 hidden"></pre>
+                        <div class="bg-[#090D16] border border-slate-800 rounded-xl p-4 font-mono text-xs text-slate-300 leading-relaxed overflow-x-auto min-h-[90px] relative">
+                            <div id="console-loading" class="hidden absolute inset-0 bg-[#090D16]/90 flex items-center justify-center font-semibold text-slate-400">
+                                <span class="w-2 h-2 rounded-full bg-emerald-450 animate-ping mr-2"></span> Running code...
+                            </div>
+                            <pre id="console-stdout" class="whitespace-pre-wrap"></pre>
+                            <pre id="console-stderr" class="whitespace-pre-wrap text-red-400 mt-2 hidden"></pre>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -181,8 +182,8 @@
             <div class="flex gap-3 items-center self-end sm:self-auto">
                 {% if attempts_remaining > 0 %}
                     <button type="button" id="run-code-btn"
-                        class="bg-slate-100 hover:bg-slate-205 border border-slate-300 text-slate-700 font-bold px-6 py-3.5 rounded-xl transition-all flex items-center gap-1.5 shadow-sm">
-                        <svg class="w-4 h-4 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                        class="bg-slate-100 hover:bg-slate-200 border border-slate-350 text-slate-700 font-bold px-6 py-3.5 rounded-xl transition-all flex items-center gap-1.5 shadow-sm">
+                        <svg class="w-4 h-4 text-slate-550" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
                             <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
@@ -222,7 +223,7 @@
         value: "# Write your Python solution here\n\n"
     });
 
-    editor.setSize("100%", "450px");
+    editor.setSize("100%", "320px");
 
     document.getElementById("submission-form").addEventListener("submit", function () {
         document.getElementById("code-input").value = editor.getValue();
@@ -236,15 +237,15 @@
 
     if (tabInputBtn && tabOutputBtn) {
         tabInputBtn.addEventListener('click', () => {
-            tabInputBtn.className = "px-5 py-3 border-r border-slate-200 bg-white text-emerald-700 border-b-2 border-b-emerald-600 focus:outline-none";
-            tabOutputBtn.className = "px-5 py-3 border-r border-slate-200 hover:text-slate-900 transition-colors focus:outline-none";
+            tabInputBtn.className = "px-5 py-3.5 border-r border-slate-800 bg-slate-950 text-emerald-400 border-b-2 border-b-emerald-500 focus:outline-none";
+            tabOutputBtn.className = "px-5 py-3.5 border-r border-slate-800 hover:text-slate-200 transition-colors focus:outline-none";
             panelInput.classList.remove('hidden');
             panelOutput.classList.add('hidden');
         });
 
         tabOutputBtn.addEventListener('click', () => {
-            tabOutputBtn.className = "px-5 py-3 border-r border-slate-200 bg-white text-emerald-700 border-b-2 border-b-emerald-600 focus:outline-none";
-            tabInputBtn.className = "px-5 py-3 border-r border-slate-200 hover:text-slate-900 transition-colors focus:outline-none";
+            tabOutputBtn.className = "px-5 py-3.5 border-r border-slate-800 bg-slate-950 text-emerald-400 border-b-2 border-b-emerald-500 focus:outline-none";
+            tabInputBtn.className = "px-5 py-3.5 border-r border-slate-800 hover:text-slate-200 transition-colors focus:outline-none";
             panelOutput.classList.remove('hidden');
             panelInput.classList.add('hidden');
         });
