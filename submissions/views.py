@@ -68,8 +68,21 @@ def submit_code(request, assignment_id):
 @login_required
 def submission_result(request, pk):
     submission = get_object_or_404(Submission, pk=pk)
+    
+    # Calculate attempts remaining for this student on this assignment
+    attempts_made = Submission.objects.filter(
+        student=submission.student,
+        assignment=submission.assignment
+    ).count()
+    attempts_remaining = max(0, 3 - attempts_made)
+    
+    # Check if due date has passed
+    is_past_due = timezone.now() > submission.assignment.due_date
+    
     return render(request, 'submissions/submission_result.html', {
-        'submission': submission
+        'submission': submission,
+        'attempts_remaining': attempts_remaining,
+        'is_past_due': is_past_due,
     })
 
 
